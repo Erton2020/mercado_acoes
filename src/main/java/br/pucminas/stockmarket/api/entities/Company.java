@@ -1,10 +1,10 @@
-package br.pucminas.mercado_acoes.api.entities;
+package br.pucminas.stockmarket.api.entities;
 
 import java.util.Calendar;
+import java.util.List;
 
 import javax.persistence.Entity;
 
-import br.pucminas.mercado_acoes.api.enums.TipoPessoa;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -17,6 +17,11 @@ import lombok.Setter;
 @NoArgsConstructor
 @EqualsAndHashCode
 @Entity
-public class Empresa extends Pessoa {
+public class Company {
+	
 	private Long id;
+	private String name;
+	private Address address;
+	private Calendar creationDate;
+	private List<Stock> stocks;
 }

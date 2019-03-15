@@ -1,10 +1,9 @@
-package br.pucminas.mercado_acoes.api.entities;
+package br.pucminas.stockmarket.api.entities;
 
 import java.util.Calendar;
 
 import javax.persistence.Entity;
 
-import br.pucminas.mercado_acoes.api.enums.TipoPessoa;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -17,11 +16,14 @@ import lombok.Setter;
 @NoArgsConstructor
 @EqualsAndHashCode
 @Entity
-public class Pessoa
-{
+public class Address {
+
 	private Long id;
-	private Long nome;
-	private TipoPessoa tipoPessoa;
-	private Endereco endereco;
-	private Calendar dataCadastro;
+	private String street;
+	private String district;
+	private String city;
+	private String state;
+	private String region;
+	private Calendar creationDate;
+	private Calendar lastUpdate;
 }
