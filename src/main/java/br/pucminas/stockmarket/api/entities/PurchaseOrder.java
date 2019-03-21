@@ -3,8 +3,10 @@ package br.pucminas.stockmarket.api.entities;
 import java.util.Calendar;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
-import br.pucminas.stockmarket.api.enums.InvestorTypeEnum;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -17,11 +19,14 @@ import lombok.Setter;
 @NoArgsConstructor
 @EqualsAndHashCode
 @Entity
-public class Investor 
-{
+public class PurchaseOrder {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private String name;
-	private InvestorTypeEnum investorType;
-	private Address address;
-	private Calendar creationDate;
+	private Investor investor;
+	private Stock stock;
+	private Double amount;
+	private Calendar purchaseDate;
+	private Double unitPurchasePrice;
 }

@@ -4,7 +4,6 @@ import java.util.Calendar;
 
 import javax.persistence.Entity;
 
-import br.pucminas.stockmarket.api.enums.InvestorTypeEnum;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -17,11 +16,10 @@ import lombok.Setter;
 @NoArgsConstructor
 @EqualsAndHashCode
 @Entity
-public class Investor 
-{
+public class InvestmentWallet {
+
 	private Long id;
-	private String name;
-	private InvestorTypeEnum investorType;
-	private Address address;
 	private Calendar creationDate;
+	private Investor investor;
+	private Calendar lastUpdate;
 }

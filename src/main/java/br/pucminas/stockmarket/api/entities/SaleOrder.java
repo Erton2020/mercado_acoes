@@ -19,16 +19,14 @@ import lombok.Setter;
 @NoArgsConstructor
 @EqualsAndHashCode
 @Entity
-public class CompanyStock {
+public class SaleOrder {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private Investor investor;
 	private Stock stock;
-	private Calendar purchaseDate;
-	private Double purchasePrice;
+	private Double amount;
 	private Calendar saleDate;
-	private Double salePrice;
-	private Calendar lastUpdate;
+	private Double unitSalePrice;
 }
