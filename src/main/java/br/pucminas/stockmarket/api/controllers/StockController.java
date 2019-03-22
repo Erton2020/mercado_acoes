@@ -40,7 +40,7 @@ public class StockController {
 	}
 
 	@GetMapping(value = "/stocks/{companyId}", produces = "application/json")
-	public List<StockDTO> findStocksByCompany(@RequestParam(value = "Identificador da empresa para consulta de ações disponiveis.", required= false) Long companyId)
+	public List<StockDTO> findStocksByCompany(@RequestParam(value = "Identificador da empresa para consulta de sações disponiveis.", required= false) Long companyId)
 	{
 		return stockService.findStocksByCompanyId(companyId);
 	}
