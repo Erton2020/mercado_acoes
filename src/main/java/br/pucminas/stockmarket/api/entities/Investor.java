@@ -1,8 +1,16 @@
 package br.pucminas.stockmarket.api.entities;
 
 import java.util.Calendar;
+import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 import br.pucminas.stockmarket.api.enums.InvestorTypeEnum;
 import lombok.AllArgsConstructor;
@@ -19,9 +27,17 @@ import lombok.Setter;
 @Entity
 public class Investor 
 {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
 	private String name;
+	
+	@Enumerated(value = EnumType.STRING)
 	private InvestorTypeEnum investorType;
-	private Address address;
+	
+	@OneToMany
+	private List<Address> addresses;
+	
 	private Calendar creationDate;
 }

@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -24,9 +25,16 @@ public class SaleOrder {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
+	@OneToOne
 	private Investor investor;
+	
+	@OneToOne
 	private Stock stock;
+	
 	private Double amount;
+	
 	private Calendar saleDate;
+	
 	private Double unitSalePrice;
 }

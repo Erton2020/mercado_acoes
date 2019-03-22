@@ -3,6 +3,10 @@ package br.pucminas.stockmarket.api.entities;
 import java.util.Calendar;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -16,10 +20,16 @@ import lombok.Setter;
 @NoArgsConstructor
 @EqualsAndHashCode
 @Entity
-public class InvestmentWallet {
-
+public class InvestmentWallet 
+{
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
 	private Calendar creationDate;
+	
+	@OneToOne
 	private Investor investor;
+	
 	private Calendar lastUpdate;
 }
