@@ -58,7 +58,7 @@ public class RabbitMQConfig implements RabbitListenerConfigurer {
     }
  
     @Bean
-    Exchange purchaseOrder() {
+    Exchange purchaseOrderExchange() {
         return ExchangeBuilder.topicExchange(EXCHANGE_PURCHASE_ORDER).build();
     }
     

@@ -3,6 +3,7 @@ package br.pucminas.stockmarket.api.dto;
 import java.util.Calendar;
 import java.util.List;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -19,6 +20,10 @@ public class InvestorDTO
 	
 	@NotBlank
 	private String name;
+	
+	@NotBlank
+	@Email
+	private String email;
 	
 	@NotBlank
 	private String investorType;

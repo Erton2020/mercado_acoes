@@ -33,6 +33,8 @@ public class Company
 	
 	private String name;
 	
+	private String email;
+	
 	@OneToOne
 	private Address address;
 	

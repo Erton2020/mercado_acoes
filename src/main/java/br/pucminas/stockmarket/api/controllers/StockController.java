@@ -112,7 +112,7 @@ public class StockController {
 			return new ResponseEntity<SaleOrderDTO>(HttpStatus.NOT_FOUND);
 		}
 		
-		saleOrderService.sendMessageSalesStock(saleOrderDTO);
+		saleOrderService.sendMessageSalesStock(saleOrderDTO, stockOptional.get());
 		
 		return new ResponseEntity<SaleOrderDTO>(HttpStatus.ACCEPTED);
 	}

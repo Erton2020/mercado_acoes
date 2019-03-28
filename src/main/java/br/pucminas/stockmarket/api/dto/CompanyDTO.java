@@ -2,6 +2,7 @@ package br.pucminas.stockmarket.api.dto;
 
 import java.util.Calendar;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -18,6 +19,10 @@ public class CompanyDTO
 	
 	@NotBlank
 	private String name;
+	
+	@NotBlank
+	@Email
+	private String email;
 	
 	@NotNull
 	private AddressDTO address;

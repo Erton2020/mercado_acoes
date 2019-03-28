@@ -32,6 +32,8 @@ public class Investor
 	
 	private String name;
 	
+	private String email;
+	
 	@Enumerated(value = EnumType.STRING)
 	private InvestorTypeEnum investorType;
 	
