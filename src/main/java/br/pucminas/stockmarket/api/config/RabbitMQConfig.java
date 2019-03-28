@@ -22,11 +22,12 @@ import org.springframework.messaging.handler.annotation.support.MessageHandlerMe
 public class RabbitMQConfig implements RabbitListenerConfigurer {
 
 	public static final String QUEUE_PURCHASE_ORDER = "purchase-order-queue";
-	public static final String QUEUE_SALE_ORDER = "sale-order-queue";
-    public static final String EXCHANGE_PURCHASE_ORDER = "purchase-order-exchange";
-    public static final String EXCHANGE_SALE_ORDER = "sale-order-exchange";
     public static final String QUEUE_DEAD_PURCHASE_ORDER = "dead-purchase_order-queue";
-    public static final String QUEUE_DEAD_SALE_ORDER = "dead-salse-order-queue";
+    public static final String EXCHANGE_PURCHASE_ORDER = "purchase-order-exchange";
+    
+    public static final String QUEUE_SALE_ORDER = "sale-order-queue";
+    public static final String QUEUE_DEAD_SALE_ORDER = "dead-sale-order-queue";
+    public static final String EXCHANGE_SALE_ORDER = "sale-order-exchange";
  
     @Bean
     Queue purchaseOrderQueue() {
@@ -67,15 +68,15 @@ public class RabbitMQConfig implements RabbitListenerConfigurer {
     }
  
     @Bean
-    Binding purchaseOrderBinding(Queue messagesQueue, TopicExchange messagesExchange) 
+    Binding purchaseOrderBinding(Queue purchaseOrderQueue, TopicExchange purchaseOrderExchange) 
     {
-        return BindingBuilder.bind(messagesQueue).to(messagesExchange).with(QUEUE_PURCHASE_ORDER);
+        return BindingBuilder.bind(purchaseOrderQueue).to(purchaseOrderExchange).with(QUEUE_PURCHASE_ORDER);
     }
     
     @Bean
-    Binding saleOrderbinding(Queue messagesQueue, TopicExchange messagesExchange) 
+    Binding saleOrderbinding(Queue saleOrderQueue, TopicExchange saleOrderExchange) 
     {
-        return BindingBuilder.bind(messagesQueue).to(messagesExchange).with(QUEUE_SALE_ORDER);
+        return BindingBuilder.bind(saleOrderQueue).to(saleOrderExchange).with(QUEUE_SALE_ORDER);
     }
     
     @Bean
