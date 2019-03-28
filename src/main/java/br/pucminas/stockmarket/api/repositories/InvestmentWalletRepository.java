@@ -9,4 +9,6 @@ import br.pucminas.stockmarket.api.entities.InvestmentWallet;
 public interface InvestmentWalletRepository extends JpaRepository<InvestmentWallet, Long>
 {
 
+	InvestmentWallet findInvestmentWalletByInvestorId(Long investorId);
+
 }

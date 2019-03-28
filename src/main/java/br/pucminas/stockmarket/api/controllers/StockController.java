@@ -1,5 +1,6 @@
 package br.pucminas.stockmarket.api.controllers;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
@@ -25,6 +26,7 @@ import br.pucminas.stockmarket.api.enums.CalculationTypeEnum;
 import br.pucminas.stockmarket.api.mappers.HistoricalStockPriceMapper;
 import br.pucminas.stockmarket.api.services.HistoricalStockPriceService;
 import br.pucminas.stockmarket.api.services.StockService;
+import br.pucminas.stockmarket.api.utils.EmailSenderUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.SwaggerDefinition;
 import io.swagger.annotations.Tag;
@@ -41,13 +43,15 @@ public class StockController {
 	StockService stockService;
 	HistoricalStockPriceService historicalStockPriceService;
 	HistoricalStockPriceMapper historicalStockPriceMapper;
+	EmailSenderUtil emailSenderUtil;
 	
 	public StockController(StockService p_stockService, HistoricalStockPriceService p_historicalStockPriceService,
-			HistoricalStockPriceMapper p_historicalStockPriceMapper) {
+			HistoricalStockPriceMapper p_historicalStockPriceMapper, EmailSenderUtil p_emailSenderUtil) {
 		
 		this.stockService = p_stockService;
 		this.historicalStockPriceService = p_historicalStockPriceService;
 		this.historicalStockPriceMapper = p_historicalStockPriceMapper;
+		this.emailSenderUtil = p_emailSenderUtil;
 	}
 
 	@GetMapping(value = "/stocks/{stockId}/currentValues", produces = "application/json")
@@ -83,7 +87,7 @@ public class StockController {
 	
 	@PostMapping(value = "/stocks/{stockId}/purchases", produces = "application/json")
 	public ResponseEntity<PurchaseOrderDTO> purchaseStock(@PathVariable("stockId") Long stockId, @Valid @RequestBody PurchaseOrderDTO purchaseOrderDTO)
-	{
+	{	
 		return null;
 	}
 	
@@ -92,4 +96,24 @@ public class StockController {
 	{
 		return null;
 	}
+	
+	
+	@GetMapping(value = "/stocks/teste", produces = "application/json")
+	public ResponseEntity<String> teste()
+	{		
+		StringBuilder corpo = new StringBuilder();
+		corpo.append("<HTML>");
+			corpo.append("<HEAD>");
+				corpo.append("<meta http-equiv='Content-Type' content='text/html; charset=UTF-8'>");
+			corpo.append("</HEAD>");
+			corpo.append("<BODY>");
+				corpo.append("<SPAN> TESTE </SPAN>");
+			corpo.append("</BODY>");
+		corpo.append("</HTML>");
+		
+		emailSenderUtil.sendEmail("cgtamaral@gmail.com", "Teste", corpo.toString());
+		
+		return new ResponseEntity<String>("ok", HttpStatus.OK);
+	}
 }
+ 
