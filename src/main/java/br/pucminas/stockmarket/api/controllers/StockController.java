@@ -24,8 +24,9 @@ import br.pucminas.stockmarket.api.entities.Stock;
 import br.pucminas.stockmarket.api.enums.CalculationTypeEnum;
 import br.pucminas.stockmarket.api.mappers.HistoricalStockPriceMapper;
 import br.pucminas.stockmarket.api.services.HistoricalStockPriceService;
+import br.pucminas.stockmarket.api.services.PurchaseOrderService;
+import br.pucminas.stockmarket.api.services.SaleOrderService;
 import br.pucminas.stockmarket.api.services.StockService;
-import br.pucminas.stockmarket.api.utils.EmailSenderUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.SwaggerDefinition;
 import io.swagger.annotations.Tag;
@@ -41,16 +42,20 @@ public class StockController {
 	
 	StockService stockService;
 	HistoricalStockPriceService historicalStockPriceService;
+	PurchaseOrderService purchaseOrderService;
+	SaleOrderService saleOrderService;
 	HistoricalStockPriceMapper historicalStockPriceMapper;
-	EmailSenderUtil emailSenderUtil;
+
 	
 	public StockController(StockService p_stockService, HistoricalStockPriceService p_historicalStockPriceService,
-			HistoricalStockPriceMapper p_historicalStockPriceMapper, EmailSenderUtil p_emailSenderUtil) {
+			PurchaseOrderService p_purchaseOrderService, SaleOrderService p_saleOrderService,
+			HistoricalStockPriceMapper p_historicalStockPriceMapper) {
 		
 		this.stockService = p_stockService;
 		this.historicalStockPriceService = p_historicalStockPriceService;
+		this.purchaseOrderService = p_purchaseOrderService;
+		this.saleOrderService = p_saleOrderService;
 		this.historicalStockPriceMapper = p_historicalStockPriceMapper;
-		this.emailSenderUtil = p_emailSenderUtil;
 	}
 
 	@GetMapping(value = "/stocks/{stockId}/currentValues", produces = "application/json")
@@ -87,17 +92,33 @@ public class StockController {
 	@PostMapping(value = "/stocks/{stockId}/purchases", produces = "application/json")
 	public ResponseEntity<PurchaseOrderDTO> purchaseStock(@PathVariable("stockId") Long stockId, @Valid @RequestBody PurchaseOrderDTO purchaseOrderDTO)
 	{	
-		return null;
+		Optional<Stock> stockOptional = stockService.findStockById(stockId);
+		if(!stockOptional.isPresent())
+		{
+			return new ResponseEntity<PurchaseOrderDTO>(HttpStatus.NOT_FOUND);
+		}
+		
+		purchaseOrderService.sendMessagePurchaseStock(purchaseOrderDTO);
+		
+		return new ResponseEntity<PurchaseOrderDTO>(HttpStatus.ACCEPTED);
 	}
 	
 	@PostMapping(value = "/stocks/{stockId}/sales", produces = "application/json")
 	public ResponseEntity<SaleOrderDTO> salesStock(@PathVariable("stockId") Long stockId, @Valid @RequestBody SaleOrderDTO saleOrderDTO)
 	{
-		return null;
+		Optional<Stock> stockOptional = stockService.findStockById(stockId);
+		if(!stockOptional.isPresent())
+		{
+			return new ResponseEntity<SaleOrderDTO>(HttpStatus.NOT_FOUND);
+		}
+		
+		saleOrderService.sendMessageSalesStock(saleOrderDTO);
+		
+		return new ResponseEntity<SaleOrderDTO>(HttpStatus.ACCEPTED);
 	}
 	
 	
-	@GetMapping(value = "/stocks/teste", produces = "application/json")
+/*	@GetMapping(value = "/stocks/teste", produces = "application/json")
 	public ResponseEntity<String> teste()
 	{		
 		StringBuilder corpo = new StringBuilder();
@@ -113,6 +134,6 @@ public class StockController {
 		emailSenderUtil.sendEmail("cgtamaral@gmail.com", "Teste", corpo.toString());
 		
 		return new ResponseEntity<String>("ok", HttpStatus.OK);
-	}
+	}*/
 }
  
