@@ -35,8 +35,8 @@ public class Investment
 	@OneToOne
 	private Stock stock;
 	
-	
 	private Double amount;
 	
 	private Calendar lastUpdate;
+	
 }

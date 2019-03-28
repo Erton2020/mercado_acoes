@@ -9,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -34,8 +36,12 @@ public class Company
 	@OneToOne
 	private Address address;
 	
-	private Calendar creationDate;
-	
 	@OneToMany
 	private List<Stock> stocks;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	private Calendar creationDate;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	private Calendar lastUpdate;
 }

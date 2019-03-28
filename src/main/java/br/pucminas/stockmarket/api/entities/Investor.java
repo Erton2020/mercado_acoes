@@ -39,4 +39,6 @@ public class Investor
 	private List<Address> addresses;
 	
 	private Calendar creationDate;
+	
+	private Calendar lastUpdate;
 }

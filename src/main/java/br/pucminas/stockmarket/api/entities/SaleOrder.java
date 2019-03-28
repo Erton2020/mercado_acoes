@@ -20,8 +20,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @EqualsAndHashCode
 @Entity
-public class SaleOrder {
-	
+public class SaleOrder 
+{	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
