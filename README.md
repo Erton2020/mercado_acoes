@@ -4,7 +4,7 @@ PUC Minas - Pós graduação em Arquitetura de Sistemas Distribuídos
 
 Disciplina de Arquitetura de Software na Plataforma Java EE
 
-Este projeto consiste no trabalho final de conclusão  da disciplina de de Arquitetura de Software na Plataforma Java EE. Trata-se de uma API Rest para tratar da compra de ações por pessoas físicas.
+Este projeto consiste no trabalho final de conclusão  da disciplina de de Arquitetura de Software na Plataforma Java EE. Trata-se de uma API Rest para gerenciamento de compra de ações por pessoas físicas.
 
 ### Pré-requisitos
 
