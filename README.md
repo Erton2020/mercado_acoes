@@ -42,4 +42,11 @@ O sistema deverá tratar da compra de ações para pessoas físicas.
 
 ### Sobre as tecnologias utilizadas
 ### Documentação da API
+
+* A documentação da API gerada pelo Swagger está disponivel após start da aplicação no endereço:
+
+```sh
+http://localhost:8080/swagger-ui.html
+```
+
 ### Detalhamento de fluxos do sistema
