@@ -7,24 +7,24 @@ Trabalho final
 
 ### Pré-requisitos
 
--Eclipse Photon ou superior;
--Java JDK 8 ou superior;
--Apache Maven versão 3.6.0 ou superior;
--Docker;
--Lombok;
--RabbitMQ;
--PostgreSQL;
--Conta de e-mail válida para configuração de remetente;
+- Eclipse Photon ou superior;
+- Java JDK 8 ou superior;
+- Apache Maven versão 3.6.0 ou superior;
+- Docker;
+- Lombok;
+- RabbitMQ;
+- PostgreSQL;
+- Conta de e-mail válida para configuração de remetente;
 
 ### Instalação e execução da aplicação em ambiente local
 
--Clonar o projeto em um diretório desejado;
--Importar o código fonte no Eclipse, selecionar a opção Existing Maven Projects;
--Editar o arquivo application.yml e informar preencher os campos abaixo:
+- Clonar o projeto em um diretório desejado;
+- Importar o código fonte no Eclipse, selecionar a opção Existing Maven Projects;
+- Editar o arquivo application.yml e informar preencher os campos abaixo:
 	addressFrom: 
 	personal: 
 	password: 
--Na aba Project Explorer, clicar no projeto com o botão direito do mouse e selecionar a opção run ou debug, Java Aplicaton e selecionar o arquivo StockMarketApplication.java;
+- Na aba Project Explorer, clicar no projeto com o botão direito do mouse e selecionar a opção run ou debug, Java Aplicaton e selecionar o arquivo StockMarketApplication.java;
 
 ## Sobre o Mercado de Ações
 
