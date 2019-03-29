@@ -1,7 +1,5 @@
 package br.pucminas.stockmarket.api.mappers;
 
-import java.util.List;
-
 import org.springframework.stereotype.Component;
 
 import br.pucminas.stockmarket.api.dto.AddressDTO;

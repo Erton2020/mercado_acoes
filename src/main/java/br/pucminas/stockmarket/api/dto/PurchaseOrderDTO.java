@@ -24,12 +24,13 @@ public class PurchaseOrderDTO
 	
 	private String companyName;
 	
+	@NotNull
 	private Long stockId;
 	
 	private String stockDescription;
 	
 	@NotNull
-	private Double amount;
+	private Long amount;
 	
 	private Calendar purchaseDate;
 	

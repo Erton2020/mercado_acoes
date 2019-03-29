@@ -97,8 +97,12 @@ public class StockController {
 		{
 			return new ResponseEntity<PurchaseOrderDTO>(HttpStatus.NOT_FOUND);
 		}
+		if(!purchaseOrderDTO.getStockId().equals(stockId))
+		{
+			return new ResponseEntity<PurchaseOrderDTO>(HttpStatus.BAD_REQUEST);
+		}
 		
-		purchaseOrderService.sendMessagePurchaseStock(purchaseOrderDTO);
+		purchaseOrderService.sendMessagePurchaseStock(purchaseOrderDTO, stockOptional.get());
 		
 		return new ResponseEntity<PurchaseOrderDTO>(HttpStatus.ACCEPTED);
 	}
@@ -111,29 +115,14 @@ public class StockController {
 		{
 			return new ResponseEntity<SaleOrderDTO>(HttpStatus.NOT_FOUND);
 		}
+		if(!saleOrderDTO.getStockId().equals(stockId))
+		{
+			return new ResponseEntity<SaleOrderDTO>(HttpStatus.BAD_REQUEST);
+		}
 		
-		saleOrderService.sendMessageSalesStock(saleOrderDTO, stockOptional.get());
+		saleOrderService.sendMessageSaleStock(saleOrderDTO, stockOptional.get());
 		
 		return new ResponseEntity<SaleOrderDTO>(HttpStatus.ACCEPTED);
 	}
-	
-	
-/*	@GetMapping(value = "/stocks/teste", produces = "application/json")
-	public ResponseEntity<String> teste()
-	{		
-		StringBuilder corpo = new StringBuilder();
-		corpo.append("<HTML>");
-			corpo.append("<HEAD>");
-				corpo.append("<meta http-equiv='Content-Type' content='text/html; charset=UTF-8'>");
-			corpo.append("</HEAD>");
-			corpo.append("<BODY>");
-				corpo.append("<SPAN> TESTE </SPAN>");
-			corpo.append("</BODY>");
-		corpo.append("</HTML>");
-		
-		emailSenderUtil.sendEmail("cgtamaral@gmail.com", "Teste", corpo.toString());
-		
-		return new ResponseEntity<String>("ok", HttpStatus.OK);
-	}*/
 }
  

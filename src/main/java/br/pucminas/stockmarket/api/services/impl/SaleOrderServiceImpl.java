@@ -10,7 +10,6 @@ import br.pucminas.stockmarket.api.dto.SaleOrderDTO;
 import br.pucminas.stockmarket.api.entities.Investor;
 import br.pucminas.stockmarket.api.entities.Stock;
 import br.pucminas.stockmarket.api.enums.CalculationTypeEnum;
-import br.pucminas.stockmarket.api.services.CompanyService;
 import br.pucminas.stockmarket.api.services.InvestorService;
 import br.pucminas.stockmarket.api.services.SaleOrderService;
 import br.pucminas.stockmarket.api.services.StockService;
@@ -25,37 +24,40 @@ public class SaleOrderServiceImpl implements SaleOrderService
 	private EmailTemplateUtil emailTemplateUtil;
 	private EmailSenderUtil emailSenderUtil;
 	private InvestorService investorService;
-	private CompanyService companyService;
 	private StockService stockService;
 	
 	public SaleOrderServiceImpl(RabbitTemplate p_rabbitTemplate, EmailTemplateUtil p_emailTemplateUtil,
-			EmailSenderUtil p_emailSenderUtil) 
+			EmailSenderUtil p_emailSenderUtil, InvestorService p_investorService,  StockService p_stockService) 
 	{
 		this.rabbitTemplate = p_rabbitTemplate;
 		this.emailTemplateUtil= p_emailTemplateUtil;
 		this.emailSenderUtil = p_emailSenderUtil;
+		this.investorService = p_investorService;
+		this.stockService = p_stockService;
 	}
 	
 	@Override
-	public void sendMessageSalesStock(SaleOrderDTO saleOrderDTO, Stock stock)
+	public void sendMessageSaleStock(SaleOrderDTO saleOrderDTO, Stock stock)
 	{
 		this.rabbitTemplate.convertAndSend(RabbitMQConfig.QUEUE_DEAD_SALE_ORDER, saleOrderDTO);
 		
-		sendEmailSSaleOrderSolicitation(saleOrderDTO, stock);
+		sendEmailSaleOrderSolicitation(saleOrderDTO, stock);
 	}
 
-	private void sendEmailSSaleOrderSolicitation(SaleOrderDTO saleOrderDTO, Stock stock) 
+	private void sendEmailSaleOrderSolicitation(SaleOrderDTO saleOrderDTO, Stock stock) 
 	{
 		Optional<Investor> investor = investorService.findInvestorById(saleOrderDTO.getInvestorId());
 		
-		Double currentStockValue = stockService.calculateStockCurrentValue(stock.getHistoricalStockPrices(), CalculationTypeEnum.BUY);
+		Double currentStockValue = stockService.calculateStockCurrentValue(stock.getHistoricalStockPrices(), CalculationTypeEnum.SELL);
 		if(investor.isPresent())
 		{
-			String bodyEmail = emailTemplateUtil.saleOrderSolicitationInvestorEmailBody(investor.get().getName(), stock.getDescription(), stock.getStockType().toString(), stock.getCompany().getName(), saleOrderDTO.getAmount(), currentStockValue);			
-			String subject = "Solicitação de compra de ações da empresa " + stock.getCompany().getName();
+			String bodyInvestorEmail = emailTemplateUtil.saleOrderSolicitationInvestorEmailBody(investor.get().getName(), stock.getDescription(), stock.getStockType().toString(), stock.getCompany().getName(), saleOrderDTO.getAmount(), currentStockValue);			
+			String subjectInvestorEmail = "Solicitação de venda de ações da empresa " + stock.getCompany().getName();
+			emailSenderUtil.sendEmail(investor.get().getEmail(),subjectInvestorEmail, bodyInvestorEmail);
 			
-			emailSenderUtil.sendEmail(investor.get().getEmail(),subject, bodyEmail);
+			String bodyComapanyEmail = emailTemplateUtil.saleOrderSolicitationCompanyEmailBody(investor.get().getName(), stock.getDescription(), stock.getStockType().toString(), stock.getCompany().getName(), saleOrderDTO.getAmount(), currentStockValue);						
+			String subjectCompanyEmail = "Solicitação de recompra de "+ saleOrderDTO.getAmount() + " ações " + stock.getDescription();
+			emailSenderUtil.sendEmail(stock.getCompany().getEmail(),subjectCompanyEmail, bodyComapanyEmail);
 		}
-		
 	}
 }

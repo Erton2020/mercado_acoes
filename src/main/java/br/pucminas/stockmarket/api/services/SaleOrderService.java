@@ -5,5 +5,5 @@ import br.pucminas.stockmarket.api.entities.Stock;
 
 public interface SaleOrderService 
 {
-	void sendMessageSalesStock(SaleOrderDTO saleOrderDTO, Stock stock);
+	void sendMessageSaleStock(SaleOrderDTO saleOrderDTO, Stock stock);
 }

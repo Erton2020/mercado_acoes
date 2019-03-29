@@ -32,7 +32,7 @@ public class PurchaseOrder {
 	@OneToOne
 	private Stock stock;
 	
-	private Double amount;
+	private Long amount;
 	
 	private Calendar purchaseDate;
 	

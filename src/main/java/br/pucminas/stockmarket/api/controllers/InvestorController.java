@@ -25,6 +25,7 @@ import br.pucminas.stockmarket.api.entities.Address;
 import br.pucminas.stockmarket.api.entities.InvestmentWallet;
 import br.pucminas.stockmarket.api.entities.Investor;
 import br.pucminas.stockmarket.api.mappers.AddressMapper;
+import br.pucminas.stockmarket.api.mappers.InvestmentMapper;
 import br.pucminas.stockmarket.api.mappers.InvestorMapper;
 import br.pucminas.stockmarket.api.services.AddressService;
 import br.pucminas.stockmarket.api.services.InvestmentWalletService;
@@ -47,15 +48,17 @@ public class InvestorController
 	AddressService adressService;
 	InvestorMapper investorMapper;
 	AddressMapper addressMapper;
+	InvestmentMapper investmentMapper;
 	
 	public InvestorController(InvestorService p_investorService, InvestmentWalletService p_investmentWalletService,
-			AddressService p_adressService,InvestorMapper p_investorMapper, AddressMapper p_addressMapper) 
+			AddressService p_adressService,InvestorMapper p_investorMapper, AddressMapper p_addressMapper, InvestmentMapper p_investmentMapper) 
 	{
 		this.investorService = p_investorService;
 		this.investmentWalletService = p_investmentWalletService;
 		this.adressService = p_adressService;
 		this.investorMapper = p_investorMapper;
 		this.addressMapper = p_addressMapper;
+		this.investmentMapper = p_investmentMapper;
 	}
 	
 
@@ -87,10 +90,19 @@ public class InvestorController
 	
 
 	@GetMapping(value = "/investors/{investorId}/investments", produces = "application/json")
-	public ResponseEntity<InvestmentDTO> findAllInvestmentsByInvestorId(@PathVariable("investorId") Long investorId)
+	public ResponseEntity<List<InvestmentDTO>> findAllInvestmentsByInvestorId(@PathVariable("investorId") Long investorId)
 	{
-		InvestmentWallet investmentWallet =  investmentWalletService.findInvestmentWalletByInvestorId(investorId);
-		return null;
+		Optional<InvestmentWallet> investmentWalletOptional =  investmentWalletService.findInvestmentWalletByInvestorId(investorId);
+		
+		if(!investmentWalletOptional.isPresent() || investmentWalletOptional.get().getInvestments()==null 
+				|| investmentWalletOptional.get().getInvestments().size() == 0)
+		{
+			return new ResponseEntity<List<InvestmentDTO>>(HttpStatus.NOT_FOUND);
+		}
+		
+		List<InvestmentDTO> investmentsDTO = investmentMapper.investmentsTOInvestmentsDTO(investmentWalletOptional.get().getInvestments());
+		
+		return  new ResponseEntity<List<InvestmentDTO>>(investmentsDTO, HttpStatus.OK);
 	}
 	
 	@PostMapping(value = "/investors", produces = "application/json")
