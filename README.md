@@ -11,8 +11,8 @@ Este projeto consiste no trabalho final de conclusão  da disciplina de de Arqui
 - Eclipse Photon ou superior;
 - Java JDK 8 ou superior;
 - Apache Maven versão 3.6.0 ou superior;
-- Docker;
 - Lombok;
+- Docker;
 - RabbitMQ;
 - PostgreSQL;
 - Conta de e-mail válida para configuração de remetente;
@@ -41,6 +41,20 @@ O sistema deverá tratar da compra de ações para pessoas físicas.
 - Durante uma compra ou venda, seu Comprador antigo e o novo precisam receber um email com a informação adequada sobre a operação;
 
 ### Sobre as tecnologias utilizadas
+
+- Eclipse:
+- Java JDK: 
+- Apache Maven:
+- Lombok:
+- Spring Framework:
+- Spring Boot:
+- Spring Data:
+- JavaMail:
+- Swagger: 
+- Docker:
+- RabbitMQ:
+- PostgreSQL:
+
 ### Documentação da API
 
 * A documentação da API gerada pelo Swagger está disponivel após start da aplicação no endereço:
