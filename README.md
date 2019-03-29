@@ -40,6 +40,8 @@ O sistema deverá tratar da compra de ações para pessoas físicas.
 - O sistema precisa tratar de forma assíncrona a compra e venda das Ações;
 - Durante uma compra ou venda, seu Comprador antigo e o novo precisam receber um email com a informação adequada sobre a operação;
 
+### Detalhamento de fluxos do sistema
+
 ### Sobre as tecnologias utilizadas
 
 - Eclipse:
@@ -63,4 +65,4 @@ O sistema deverá tratar da compra de ações para pessoas físicas.
 http://localhost:8080/swagger-ui.html
 ```
 
-### Detalhamento de fluxos do sistema
+
