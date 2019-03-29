@@ -21,10 +21,10 @@ Este projeto consiste no trabalho final de conclusão  da disciplina de de Arqui
 
 - Clonar o projeto em um diretório desejado;
 - Importar o código fonte no Eclipse, selecionar a opção Existing Maven Projects;
-- Editar o arquivo application.yml e informar preencher os campos abaixo:
-	addressFrom: 
-	personal: 
-	password: 
+- Editar o arquivo application.yml e configurar os dados remetente para envio automatico de email pela aplicação:
+	* addressFrom: Necessário informar uma conta de email google válida;
+	* personal: Necessário informar um alias para a conta de email, exemplo: Sistema de Mercado de Ações;
+	* password: Necessário informar a senha da conta de email;
 - Na aba Project Explorer, clicar no projeto com o botão direito do mouse e selecionar a opção run ou debug, Java Aplicaton e selecionar o arquivo StockMarketApplication.java;
 
 ## Sobre o Mercado de Ações
@@ -39,3 +39,7 @@ O sistema deverá tratar da compra de ações para pessoas físicas.
 - Um Comprador pode possuir várias Ações;
 - O sistema precisa tratar de forma assíncrona a compra e venda das Ações;
 - Durante uma compra ou venda, seu Comprador antigo e o novo precisam receber um email com a informação adequada sobre a operação;
+
+### Sobre as tecnologias utilizadas
+### Documentação da API
+### Detalhamento de fluxos do sistema
