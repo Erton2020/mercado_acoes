@@ -66,17 +66,6 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService
 			emailSenderUtil.sendEmail(stock.getCompany().getEmail(),subjectCompanyEmail, bodyComapanyEmail);
 		}
 	}
-	
-	private void sendEmailPuchaseOrderConfirmation(PurchaseOrder purchaseOrder) 
-	{	
-/*		String bodyInvestorEmail = emailTemplateUtil.purchaseOrderSolicitationInvestorEmailBody(investor.get().getName(), stock.getDescription(), stock.getStockType().toString(), stock.getCompany().getName(), purchaseOrderDTO.getAmount(), currentStockValue);			
-		String subjectInvestorEmail = "Solicitação de compra de ações da empresa " + stock.getCompany().getName();
-		emailSenderUtil.sendEmail(investor.get().getEmail(),subjectInvestorEmail, bodyInvestorEmail);
-		
-		String bodyComapanyEmail = emailTemplateUtil.purchaseOrderSolicitationCompanyEmailBody(investor.get().getName(), stock.getDescription(), stock.getStockType().toString(), stock.getCompany().getName(), purchaseOrderDTO.getAmount(), currentStockValue);						
-		String subjectCompanyEmail = "Solicitação de venda de "+ purchaseOrderDTO.getAmount() + " ações " + stock.getDescription();
-		emailSenderUtil.sendEmail(stock.getCompany().getEmail(),subjectCompanyEmail, bodyComapanyEmail);	*/
-	}
 
 	@Override
 	public PurchaseOrder insert(PurchaseOrder purchaseOrder) 

@@ -92,7 +92,7 @@ public class StockServiceImpl implements StockService
 	    	case BUY:
 	    		maxValue += (maxValue * 0.10);
 	    		break;
-	    	case SELL:
+	    	case SALE:
 	    		maxValue += (maxValue * -0.02) * -1;
 	    		break;
 	    	case CREATE:

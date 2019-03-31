@@ -8,8 +8,10 @@ import org.springframework.stereotype.Service;
 import br.pucminas.stockmarket.api.config.RabbitMQConfig;
 import br.pucminas.stockmarket.api.dto.SaleOrderDTO;
 import br.pucminas.stockmarket.api.entities.Investor;
+import br.pucminas.stockmarket.api.entities.SaleOrder;
 import br.pucminas.stockmarket.api.entities.Stock;
 import br.pucminas.stockmarket.api.enums.CalculationTypeEnum;
+import br.pucminas.stockmarket.api.repositories.SaleOrderRepository;
 import br.pucminas.stockmarket.api.services.InvestorService;
 import br.pucminas.stockmarket.api.services.SaleOrderService;
 import br.pucminas.stockmarket.api.services.StockService;
@@ -25,15 +27,18 @@ public class SaleOrderServiceImpl implements SaleOrderService
 	private EmailSenderUtil emailSenderUtil;
 	private InvestorService investorService;
 	private StockService stockService;
+	private SaleOrderRepository saleOrderRepository;
 	
 	public SaleOrderServiceImpl(RabbitTemplate p_rabbitTemplate, EmailTemplateUtil p_emailTemplateUtil,
-			EmailSenderUtil p_emailSenderUtil, InvestorService p_investorService,  StockService p_stockService) 
+			EmailSenderUtil p_emailSenderUtil, InvestorService p_investorService,  StockService p_stockService,
+			SaleOrderRepository p_saleOrderRepository) 
 	{
 		this.rabbitTemplate = p_rabbitTemplate;
 		this.emailTemplateUtil= p_emailTemplateUtil;
 		this.emailSenderUtil = p_emailSenderUtil;
 		this.investorService = p_investorService;
 		this.stockService = p_stockService;
+		this.saleOrderRepository = p_saleOrderRepository;
 	}
 	
 	@Override
@@ -48,7 +53,7 @@ public class SaleOrderServiceImpl implements SaleOrderService
 	{
 		Optional<Investor> investor = investorService.findInvestorById(saleOrderDTO.getInvestorId());
 		
-		Double currentStockValue = stockService.calculateStockCurrentValue(stock.getHistoricalStockPrices(), CalculationTypeEnum.SELL);
+		Double currentStockValue = stockService.calculateStockCurrentValue(stock.getHistoricalStockPrices(), CalculationTypeEnum.SALE);
 		if(investor.isPresent())
 		{
 			String bodyInvestorEmail = emailTemplateUtil.saleOrderSolicitationInvestorEmailBody(investor.get().getName(), stock.getDescription(), stock.getStockType().toString(), stock.getCompany().getName(), saleOrderDTO.getAmount(), currentStockValue);			
@@ -59,5 +64,11 @@ public class SaleOrderServiceImpl implements SaleOrderService
 			String subjectCompanyEmail = "Solicitação de recompra de "+ saleOrderDTO.getAmount() + " ações " + stock.getDescription();
 			emailSenderUtil.sendEmail(stock.getCompany().getEmail(),subjectCompanyEmail, bodyComapanyEmail);
 		}
+	}
+
+	@Override
+	public SaleOrder insert(SaleOrder saleOrder)
+	{
+		return saleOrderRepository.save(saleOrder);
 	}
 }

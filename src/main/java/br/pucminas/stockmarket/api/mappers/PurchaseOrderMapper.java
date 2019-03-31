@@ -28,7 +28,7 @@ public class PurchaseOrderMapper {
 	public PurchaseOrder purchaseOrderDTOTOPurchaseOrder(PurchaseOrderDTO purchaseOrderDTO) 
 	{
 		Optional<Investor> investorOptional = investorService.findInvestorById(purchaseOrderDTO.getInvestorId());
-		Optional<Stock> stockOptional = stockService.findStockById(purchaseOrderDTO.getId());	
+		Optional<Stock> stockOptional = stockService.findStockById(purchaseOrderDTO.getStockId());	
 
 		PurchaseOrder purchaseOrder = new PurchaseOrder();
 		purchaseOrder.setInvestor(investorOptional.get());
@@ -40,8 +40,7 @@ public class PurchaseOrderMapper {
 		
 		purchaseOrder.setUnitPurchasePrice(currentStockValue);
 
-        return purchaseOrder;
-		
+        return purchaseOrder;		
 	}
 
 }

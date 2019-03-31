@@ -160,7 +160,7 @@ public class EmailTemplateUtil
 	}
 	
 	public String saleOrderConfirmationCompanyEmailBody(String investorName, 
-			String stockDescription, String stockType, String companyName, Double quantityStockPurchase, Double currentStockValue)
+			String stockDescription, String stockType, String companyName, Long quantityStockPurchase, Double currentStockValue)
 	{		
 		StringBuilder body = new StringBuilder();
 		body.append("<HTML>");

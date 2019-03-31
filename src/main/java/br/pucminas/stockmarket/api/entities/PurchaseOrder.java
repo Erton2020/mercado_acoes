@@ -34,7 +34,7 @@ public class PurchaseOrder {
 	
 	private Long amount;
 	
-	private Calendar purchaseDate;
-	
 	private Double unitPurchasePrice;
+
+	private Calendar purchaseDate;
 }

@@ -3,7 +3,7 @@ package br.pucminas.stockmarket.api.enums;
 public enum CalculationTypeEnum 
 {
 	BUY,
-	SELL,
+	SALE,
 	CREATE,
 	UPDATE,
 	CURRENT_VALUE
