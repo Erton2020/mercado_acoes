@@ -24,7 +24,7 @@ public class InvestmentMapper
 			investmentDTO.setStockId(investment.getStock().getId());
 			investmentDTO.setStockDescription(investment.getStock().getDescription());
 			investmentDTO.setStockType(investment.getStock().getStockType().toString());
-			investmentDTO.setAmountCurrentStock(investment.getStockQuantity());
+			//investmentDTO.setAmountCurrentStock(investment.getStockQuantity());
 	/*		investmentDTO.setCurrentStockValue(currentStockValue);
 			investmentDTO.setAmountStockPurchased(amountStockPurchased);
 			investmentDTO.setPurchaseAverageValue(purchaseAverageValue);
