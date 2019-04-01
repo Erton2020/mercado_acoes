@@ -25,7 +25,13 @@ Este projeto consiste no trabalho final de conclusão  da disciplina de de Arqui
 	* addressFrom: Necessário informar uma conta de email google válida;
 	* personal: Necessário informar um alias para a conta de email, exemplo: Sistema de Mercado de Ações;
 	* password: Necessário informar a senha da conta de email;
-- Na aba Project Explorer, clicar no projeto com o botão direito do mouse e selecionar a opção run ou debug, Java Aplicaton e selecionar o arquivo StockMarketApplication.java;
+- Para executar os próximos passos é necessario possuir o Docker instalado:
+	* Iniciar a imagem docker do RabbitMQ com o console Web, para isso executar o seguinte comando:
+
+	```sh
+	docker run -d --hostname rabbitmq --name rabbitmq-management -p 15672:15672 -p 5671:5671 -p 5672:5672 rabbitmq:management
+	```
+- No Eclipes, acessar a aba Project Explorer, clicar no projeto com o botão direito do mouse e selecionar a opção run ou debug, Java Aplicaton e selecionar o arquivo StockMarketApplication.java;
 
 ## Sobre o Mercado de Ações
 
