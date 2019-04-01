@@ -44,7 +44,7 @@ O sistema deverá tratar da compra de ações para pessoas físicas.
 
 ### Sobre as tecnologias utilizadas
 
-- Eclipse:
+- Eclipse: https://www.eclipse.org/
 - Java JDK: 
 - Apache Maven:
 - Lombok:
