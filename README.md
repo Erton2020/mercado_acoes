@@ -46,7 +46,32 @@ O sistema deverá tratar da compra de ações para pessoas físicas.
 - O sistema precisa tratar de forma assíncrona a compra e venda das Ações;
 - Durante uma compra ou venda, seu Comprador antigo e o novo precisam receber um email com a informação adequada sobre a operação;
 
+### Documentação da API
+
+* A documentação da API gerada pelo Swagger está disponivel após start da aplicação no endereço:
+
+```sh
+http://localhost:8080/swagger-ui.html
+```
+
 ### Detalhamento de fluxos do sistema
+
+A API para o Mercado de Ações permite realizar operações de cadastro de empresa, investidores, disponibilização de uma ação de uma empresa para venda no mercado e compra e venda de ações por um investidor.
+Para o cenário de compra e venda esta API restringiu-se ao escopo de simular a compra direta da ação pelo investidor junto a empresa proprietária da ação. Quando o mesmo desejar vender esta ação o mesmo deve emitir uma ordem de venda, onde
+a ação será recomprada pelo valor corrente pela empresa proprietária.
+
+Abaixo um exemplo de fluxo para simulação no cenário descrito acima
+
+1. Cadastrar uma nova Empresa;
+2. Cadastrar uma Acão para Empresa criada anteriormente;
+3. Cadastro de um Investidor;
+4. Consultar as ações a venda da Empresa criada no passo 1;
+5. Cadastrar uma ordem de compra para ação criada no passo 2;
+6. Verificar no email do investidor o recebimento de email informando o registro de uma solicitação de compra;
+7. Verificar no email da empresa o recebimento de email informando o registro de uma solicitação de compra;
+8. Verificar no email do investidor o recebimento de email confirmando a compra de ações;
+9. Verificar no email da empresa o recebimento de email confirmando a venda de ações;
+10. Consultar os investimentos do Investidor criado no passo 3;
 
 ### Sobre as tecnologias utilizadas
 
@@ -63,12 +88,5 @@ O sistema deverá tratar da compra de ações para pessoas físicas.
 - RabbitMQ: https://www.rabbitmq.com/
 - PostgreSQL: https://www.postgresql.org/
 
-### Documentação da API
-
-* A documentação da API gerada pelo Swagger está disponivel após start da aplicação no endereço:
-
-```sh
-http://localhost:8080/swagger-ui.html
-```
 
 
