@@ -31,7 +31,7 @@ Este projeto consiste no trabalho final de conclusão  da disciplina de de Arqui
 	```sh
 	docker run -d --hostname rabbitmq --name rabbitmq-management -p 15672:15672 -p 5671:5671 -p 5672:5672 rabbitmq:management
 	```
-- No Eclipes, acessar a aba Project Explorer, clicar no projeto com o botão direito do mouse e selecionar a opção run ou debug, Java Aplicaton e selecionar o arquivo StockMarketApplication.java;
+- No Eclipse, acessar a aba Project Explorer, clicar no projeto com o botão direito do mouse e selecionar a opção run ou debug, Java Aplicaton e selecionar o arquivo StockMarketApplication.java;
 
 ## Sobre o Mercado de Ações
 
