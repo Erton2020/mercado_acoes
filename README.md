@@ -45,17 +45,17 @@ O sistema deverá tratar da compra de ações para pessoas físicas.
 ### Sobre as tecnologias utilizadas
 
 - Eclipse: https://www.eclipse.org/
-- Java JDK: 
-- Apache Maven:
-- Lombok:
-- Spring Framework:
-- Spring Boot:
-- Spring Data:
-- JavaMail:
-- Swagger: 
-- Docker:
-- RabbitMQ:
-- PostgreSQL:
+- Java JDK:  https://www.oracle.com/technetwork/java/javase/overview/index.html
+- Apache Maven: https://maven.apache.org/
+- Lombok: https://projectlombok.org/
+- Spring Framework: https://spring.io/projects/spring-framework
+- Spring Boot: https://spring.io/projects/spring-boot
+- Spring Data: https://spring.io/projects/spring-data
+- JavaMail: https://www.oracle.com/technetwork/java/javamail/index.html
+- Swagger: https://swagger.io/
+- Docker: https://www.docker.com/
+- RabbitMQ: https://www.rabbitmq.com/
+- PostgreSQL: https://www.postgresql.org/
 
 ### Documentação da API
 
