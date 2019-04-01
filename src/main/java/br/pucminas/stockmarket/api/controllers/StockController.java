@@ -28,16 +28,16 @@ import br.pucminas.stockmarket.api.services.PurchaseOrderService;
 import br.pucminas.stockmarket.api.services.SaleOrderService;
 import br.pucminas.stockmarket.api.services.StockService;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.SwaggerDefinition;
-import io.swagger.annotations.Tag;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 @RestController
 @RequestMapping("/v1/public")
 @CrossOrigin(origins = "*")
-@Api(value = "stocks", tags={ "stocks"})
-@SwaggerDefinition(tags = {
-	    @Tag(name = "Stocks", description = "Recurso para gerencimento de Ações.")
-	})
+@Api(value = "stocks", tags={ "stocks"}, description = "Recurso para gerencimento de Ações. Permite a consulta de valores históricos de uma ação além de execução de compra e vendas.",
+consumes = "application/json",  produces = "application/json")
 public class StockController {
 	
 	StockService stockService;
@@ -58,8 +58,11 @@ public class StockController {
 		this.historicalStockPriceMapper = p_historicalStockPriceMapper;
 	}
 
-	@GetMapping(value = "/stocks/{stockId}/currentValues", produces = "application/json")
-	public ResponseEntity<HistoricalStockPriceDTO> findCurrentStockValueByStockId(@PathVariable("stockId") Long stockId)
+    @ApiOperation(value = "Recupera o valor corrente unitário para uma ação", nickname = "findCurrentStockValueByStockId", notes = "", tags={ "stocks"})
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Operação bem sucessida!"),
+			@ApiResponse(code = 404, message = "Não foi encontrada nenhuma ação na base de dados para o stockId informado!")})
+	@GetMapping(value = "/stocks/{stockId}/currentValues", consumes = "application/json",  produces = "application/json")
+	public ResponseEntity<HistoricalStockPriceDTO> findCurrentStockValueByStockId(@ApiParam(value = "Identificador da ação para consulta de seu valor unitário corrente.", required = true) @PathVariable("stockId") Long stockId)
 	{
 
 		Optional<Stock> stockOptional = stockService.findStockById(stockId);
@@ -77,20 +80,34 @@ public class StockController {
 			
 			return new ResponseEntity<HistoricalStockPriceDTO>(historicalStockPriceDTO, HttpStatus.OK);
 		}
-			
+
 		return new ResponseEntity<HistoricalStockPriceDTO>(HttpStatus.NOT_FOUND);
 	}
 	
-	@GetMapping(value = "/stocks/{stockId}/historicalValues", produces = "application/json")
-	public ResponseEntity<List<HistoricalStockPriceDTO>> findAllHistoricalStockPriceByStockId(@PathVariable("stockId") Long stockId)
+    @ApiOperation(value = "Recupera os valores históricos unitários para uma ação", nickname = "findAllHistoricalStockPriceByStockId", notes = "", tags={ "stocks"})
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Operação bem sucessida!"),
+			@ApiResponse(code = 404, message = "Não foi encontrada nenhuma ação na base de dados para o stockId informado!")})
+	@GetMapping(value = "/stocks/{stockId}/historicalValues", consumes = "application/json",  produces = "application/json")
+	public ResponseEntity<List<HistoricalStockPriceDTO>> findAllHistoricalStockPriceByStockId(@ApiParam(value = "Identificador da ação para consulta de seus valores unitários históricos.", required = true) @PathVariable("stockId") Long stockId)
 	{
-		List<HistoricalStockPriceDTO> historicalValues = historicalStockPriceService.findAllHistoricalStockPriceDTOByStockId(stockId);
+
+		Optional<Stock> stockOptional = stockService.findStockById(stockId);
+		if(stockOptional.isPresent())
+		{
+			List<HistoricalStockPriceDTO> historicalValues = historicalStockPriceService.findAllHistoricalStockPriceDTOByStockId(stockId);
+			new ResponseEntity<List<HistoricalStockPriceDTO>>(historicalValues, HttpStatus.OK);
+		}
 			
-		return new ResponseEntity<List<HistoricalStockPriceDTO>>(historicalValues, HttpStatus.OK);
+		return new ResponseEntity<List<HistoricalStockPriceDTO>>(HttpStatus.NOT_FOUND);
 	}
 	
-	@PostMapping(value = "/stocks/{stockId}/purchases", produces = "application/json")
-	public ResponseEntity<PurchaseOrderDTO> purchaseStock(@PathVariable("stockId") Long stockId, @Valid @RequestBody PurchaseOrderDTO purchaseOrderDTO)
+    @ApiOperation(value = "Envia para processamento uma solicitação de ordem de compra de uma ação especifica.", nickname = "purchaseStock", notes = "", tags={ "stocks"})
+    @ApiResponses(value = {@ApiResponse(code = 201, message = "Operação recebida para processamento!"),
+			@ApiResponse(code = 400, message = "O stockId informado não corresponde as informações enviadas para a ordem de compra!"),
+			@ApiResponse(code = 404, message = "Não foi encontrada nenhuma ação na base de dados para o stockId informado!")})
+	@PostMapping(value = "/stocks/{stockId}/purchases", consumes = "application/json",  produces = "application/json")
+	public ResponseEntity<PurchaseOrderDTO> purchaseStock(@ApiParam(value = "Identificador da ação para compra", required = true) @PathVariable("stockId") Long stockId, 
+			@ApiParam(value = "Objeto com as informações da solicitação de ordem de compra de um ação especifica.", required = true) @Valid @RequestBody PurchaseOrderDTO purchaseOrderDTO)
 	{	
 		Optional<Stock> stockOptional = stockService.findStockById(stockId);
 		if(!stockOptional.isPresent())
@@ -107,8 +124,13 @@ public class StockController {
 		return new ResponseEntity<PurchaseOrderDTO>(HttpStatus.ACCEPTED);
 	}
 	
-	@PostMapping(value = "/stocks/{stockId}/sales", produces = "application/json")
-	public ResponseEntity<SaleOrderDTO> salesStock(@PathVariable("stockId") Long stockId, @Valid @RequestBody SaleOrderDTO saleOrderDTO)
+    @ApiOperation(value = "Envia para processamento uma solicitação de ordem de venda de uma ação especifica.", nickname = "salesStock", notes = "", tags={ "stocks"})
+    @ApiResponses(value = {@ApiResponse(code = 201, message = "Operação recebida para processamento!"),
+			@ApiResponse(code = 400, message = "O stockId informado não corresponde as informações enviadas para a ordem de venda!"),
+			@ApiResponse(code = 404, message = "Não foi encontrada nenhuma ação na base de dados para o stockId informado!")})
+	@PostMapping(value = "/stocks/{stockId}/sales", consumes = "application/json",  produces = "application/json")
+	public ResponseEntity<SaleOrderDTO> salesStock(@ApiParam(value = "Identificador da ação para compra", required = true) @PathVariable("stockId") Long stockId, 
+			@ApiParam(value = "Objeto com as informações da solicitação de ordem de venda de um ação especifica.", required = true) @Valid @RequestBody SaleOrderDTO saleOrderDTO)
 	{
 		Optional<Stock> stockOptional = stockService.findStockById(stockId);
 		if(!stockOptional.isPresent())

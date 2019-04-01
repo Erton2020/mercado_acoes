@@ -102,7 +102,7 @@ public class PurchaseOrderListener
     	investmentHistorical.setInvestment(investment);
     	investmentHistorical.setInvestmentHistoricalType(InvestmentHistoricalTypeEnum.PURCHASE);
     	investmentHistorical.setQuantity(purchaseOrder.getAmount());
-    	investmentHistorical.setValue(stockCurrentValue);
+    	investmentHistorical.setUnitStockValue(stockCurrentValue);
     	investmentHistorical.setCreationDate(currentDate);
     	
     	investmentHistoricalService.insert(investmentHistorical);

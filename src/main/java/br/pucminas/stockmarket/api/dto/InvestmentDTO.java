@@ -1,6 +1,7 @@
 package br.pucminas.stockmarket.api.dto;
 
 import java.util.Calendar;
+import java.util.List;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,13 +30,15 @@ public class InvestmentDTO
 
 	private Double currentStockValue;
 	
-	private Long amountStockPurchased;
+	private Long amountOfStockInWallet;
 	
-	private Double purchaseAverageValue;
+	private Double purchaseAverageUnitStockValue;
 
 	private Long amountStockSold;
 	
-	private Double saleAverageValue;
+	private Double saleAverageUnitStockValue;
 	
-	private Double averageProfitValue;
+	private List<InvestmentHistoricalDTO> purchasesHistorical;
+	
+	private List<InvestmentHistoricalDTO> salesHistorical;
 }

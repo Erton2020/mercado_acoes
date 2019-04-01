@@ -37,7 +37,7 @@ public class InvestmentHistorical
 	
 	private Long quantity;
 	
-	private Double value;
+	private Double unitStockValue;
 	
 	private Calendar  creationDate;
 }

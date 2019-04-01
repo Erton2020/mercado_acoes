@@ -1,5 +1,6 @@
 package br.pucminas.stockmarket.api.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.pucminas.stockmarket.api.dto.AddressDTO;
 import br.pucminas.stockmarket.api.dto.InvestmentDTO;
 import br.pucminas.stockmarket.api.dto.InvestorDTO;
 import br.pucminas.stockmarket.api.entities.Address;
@@ -31,16 +33,15 @@ import br.pucminas.stockmarket.api.services.AddressService;
 import br.pucminas.stockmarket.api.services.InvestmentWalletService;
 import br.pucminas.stockmarket.api.services.InvestorService;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.SwaggerDefinition;
-import io.swagger.annotations.Tag;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 @RestController
 @RequestMapping("/v1/public")
 @CrossOrigin(origins = "*")
-@Api(value = "investors", tags={ "investors"})
-@SwaggerDefinition(tags = {
-	    @Tag(name = "Investors", description = "Recurso para gerencimento de investidores.")
-	})
+@Api(value = "investors", tags={ "investors"} ,description = "Recurso para gerencimento de investidores. Permite a realização de cadastro de novos investidores, a atualização de dados cadastrais de investidores já existentes e obtenção consolidada dos investimentos de um investidor.")
 public class InvestorController
 {	
 	InvestorService investorService;
@@ -61,8 +62,10 @@ public class InvestorController
 		this.investmentMapper = p_investmentMapper;
 	}
 	
-
-	@GetMapping(value = "/investors", produces = "application/json")
+    @ApiOperation(value = "Recupera os cadastros de todos os investidores existentes na base de dados", nickname = "findAllInvestors", notes = "", tags={ "investors"})
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Operação bem sucessida!"),
+			@ApiResponse(code = 404, message = "Não foi encontrada nenhum investidor na base de dados!")})
+	@GetMapping(value = "/investors", consumes = "application/json",  produces = "application/json")
 	public ResponseEntity<List<InvestorDTO>> findAllInvestors()
 	{
 		List<InvestorDTO> investors = investorService.findAllInvestorsDTO();
@@ -74,8 +77,11 @@ public class InvestorController
 		return new ResponseEntity<List<InvestorDTO>>(HttpStatus.OK);
 	}
 	
-	@GetMapping(value = "/investors/{investorId}", produces = "application/json")
-	public ResponseEntity<InvestorDTO> findInvestorById(@PathVariable("investorId") Long investorId)
+    @ApiOperation(value = "Recupera os dados cadastrais de um investidor especifico.", nickname = "findInvestorById", notes = "", tags={ "investors"})
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Operação bem sucessida!"),
+			@ApiResponse(code = 404, message = "Não foi encontrado nenhum investidor para o investorId informado.")})
+	@GetMapping(value = "/investors/{investorId}", consumes = "application/json",  produces = "application/json")
+	public ResponseEntity<InvestorDTO> findInvestorById(@ApiParam(value = "Identificador do investidor para consulta de informações", required = true)  @PathVariable("investorId") Long investorId)
 	{
 		Optional<Investor> investorOptional = investorService.findInvestorById(investorId);
 		if(!investorOptional.isPresent())
@@ -88,9 +94,11 @@ public class InvestorController
 		return new ResponseEntity<InvestorDTO>(investorDTO, HttpStatus.OK);
 	}
 	
-
-	@GetMapping(value = "/investors/{investorId}/investments", produces = "application/json")
-	public ResponseEntity<List<InvestmentDTO>> findAllInvestmentsByInvestorId(@PathVariable("investorId") Long investorId)
+    @ApiOperation(value = "Recupera todos os investimentos de um investidor especifico", nickname = "findAllInvestmentsByInvestorId", notes = "", tags={ "investors"})
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Operação bem sucessida!"),
+			@ApiResponse(code = 404, message = "Não foi encontrado nenhum investimento para o investorId informado.")})
+	@GetMapping(value = "/investors/{investorId}/investments", consumes = "application/json",  produces = "application/json")
+	public ResponseEntity<List<InvestmentDTO>> findAllInvestmentsByInvestorId(@ApiParam(value = "Identificador do investidor para consulta de informações", required = true) @PathVariable("investorId") Long investorId)
 	{
 		Optional<InvestmentWallet> investmentWalletOptional =  investmentWalletService.findInvestmentWalletByInvestorId(investorId);
 		
@@ -105,8 +113,10 @@ public class InvestorController
 		return  new ResponseEntity<List<InvestmentDTO>>(investmentsDTO, HttpStatus.OK);
 	}
 	
-	@PostMapping(value = "/investors", produces = "application/json")
-	public ResponseEntity<InvestorDTO> insertInvestor(@Valid @RequestBody InvestorDTO investorDTO)
+    @ApiOperation(value = "Inclui um novo investidor na base de dados", nickname = "insertInvestor", notes = "", tags={ "investors"})
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Operação bem sucessida!")})
+	@PostMapping(value = "/investors", consumes = "application/json",  produces = "application/json")
+	public ResponseEntity<InvestorDTO> insertInvestor(@ApiParam(value = "Objeto com as informações cadastrais do investidor a ser incluido.", required = true) @Valid @RequestBody InvestorDTO investorDTO)
 	{
 		Investor investor = investorMapper.investorDTOTOInvestor(investorDTO);
 		List<Address> addresses = StreamSupport.stream(investorDTO.getAddresses()
@@ -124,13 +134,65 @@ public class InvestorController
 		return new ResponseEntity<InvestorDTO>(investorDTO, HttpStatus.OK);
 	}
 	
-	@PutMapping(value = "/investors/{investorId}", produces = "application/json")
-	public ResponseEntity<InvestorDTO> updateInvestor(@PathVariable("investorId") Long investorId,  @Valid @RequestBody InvestorDTO investorDTO,
+    @ApiOperation(value = "Atualiza os dados cadastrais de um investidor especifico na base de dados", nickname = "updateInvestor", notes = "", tags={ "investors"})
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Operação bem sucessida!")})
+	@PutMapping(value = "/investors/{investorId}", consumes = "application/json",  produces = "application/json")
+	public ResponseEntity<InvestorDTO> updateInvestor(@ApiParam(value = "Identificador do investidor a ser atualizado na base de dados.", required = true) @PathVariable("investorId") Long investorId, 
+			@ApiParam(value = "Objeto com as informações cadastrais do investidor para atualização.", required = true) @Valid @RequestBody InvestorDTO investorDTO,
 			BindingResult result)
 	{
-		Investor investor = investorService.update(new Investor());
-		
-		investorDTO = investorMapper.investorTOInvestorDTO(investor);
+    	Optional<Investor> investorOptional = investorService.findInvestorById(investorId);
+    	if(!investorOptional.isPresent())
+		{
+    		if(investorOptional.isPresent())
+    		{
+    			
+    			List<Address> addresses = new ArrayList<Address>();
+    			if(investorDTO.getAddresses()!=null)
+    			{
+    				for (AddressDTO addressDTO : investorDTO.getAddresses()) 
+    				{
+    					Address addressAux = null;
+    					if(addressDTO.getId()!=null)
+    					{
+    						for (Address address : investorOptional.get().getAddresses()) 
+    						{
+    							if(address.getId().equals(addressDTO.getId()))
+								{
+    								addressAux = addressMapper.updateAdress(address, addressDTO);
+    								addressAux = adressService.update(address);
+    								break;
+								}
+							}
+    					}
+						if(addressAux==null)
+						{
+							addressAux = addressMapper.addressDTOToAddress(addressDTO);
+							addressAux = adressService.update(addressAux);
+							addresses.add(addressAux);
+						}
+					}
+    			}
+    			
+    			Optional<Investor> investorOptionalAux = investorService.findInvestorById(investorId);
+    			Investor investor = investorOptionalAux.get();
+    			if(addresses!=null && addresses.size() > 0)
+    			{
+    				investor.getAddresses().addAll(addresses);
+    			}
+    			
+    			investor = investorMapper.updateInvestor(investor, investorDTO);	
+    
+   				investor = investorService.update(investor);
+					     			
+    			investorDTO = investorMapper.investorTOInvestorDTO(investor);
+    		}
+    		else
+    		{
+    			return new ResponseEntity<InvestorDTO>(HttpStatus.NOT_FOUND);
+    		}
+		}
+
 
 		return new ResponseEntity<InvestorDTO>(investorDTO, HttpStatus.OK);
 	}

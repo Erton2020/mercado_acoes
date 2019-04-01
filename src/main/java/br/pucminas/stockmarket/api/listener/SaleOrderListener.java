@@ -104,7 +104,7 @@ public class SaleOrderListener
     	investmentHistorical.setInvestment(investment);
     	investmentHistorical.setInvestmentHistoricalType(InvestmentHistoricalTypeEnum.SALE);
     	investmentHistorical.setQuantity(saleOrder.getAmount());
-    	investmentHistorical.setValue(stockCurrentValue);
+    	investmentHistorical.setUnitStockValue(stockCurrentValue);
     	investmentHistorical.setCreationDate(currentDate);
     	
     	investmentHistoricalService.insert(investmentHistorical);

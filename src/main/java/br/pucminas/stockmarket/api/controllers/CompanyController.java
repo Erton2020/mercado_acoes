@@ -34,16 +34,16 @@ import br.pucminas.stockmarket.api.services.CompanyService;
 import br.pucminas.stockmarket.api.services.HistoricalStockPriceService;
 import br.pucminas.stockmarket.api.services.StockService;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.SwaggerDefinition;
-import io.swagger.annotations.Tag;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 @RestController
 @RequestMapping("/v1/public")
 @CrossOrigin(origins = "*")
-@Api(value = "companies", tags={ "companies"})
-@SwaggerDefinition(tags = {
-	    @Tag(name = "Companies", description = "Recurso para gerencimento de Empresas e suas ações. Permite a realização de inclusão e edição de uma empresa e gestão de ações.")
-	})
+@Api(value = "companies", tags={ "companies"}, description="Recurso para gerencimento de Empresas e suas ações. Permite a realização de inclusão e edição de uma empresa e gestão de suas ações.",
+consumes = "application/json",  produces = "application/json")
 public class CompanyController
 {
 	
@@ -68,7 +68,10 @@ public class CompanyController
 		this.stockMapper = p_stockMapper;
 	}
 
-	@GetMapping(value = "/companies", produces = "application/json")
+    @ApiOperation(value = "Recupera os dados cadastrais de todas as empresas existentes.", nickname = "findAllCompanies", notes = "", tags={ "companies"})
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Operação bem sucessida!"),
+			@ApiResponse(code = 404, message = "Não foi encontrada nenhuma empresa na base de dados!")})
+	@GetMapping(value = "/companies", consumes = "application/json",  produces = "application/json")
 	public ResponseEntity<List<CompanyDTO>> findAllCompanies()
 	{
 		List<CompanyDTO> companiesDTO = companyService.findAllCompaniesDTO();
@@ -80,8 +83,11 @@ public class CompanyController
 		return new ResponseEntity<List<CompanyDTO>>(HttpStatus.OK);
 	}
 	
-	@GetMapping(value = "/companies/{companyId}", produces = "application/json")
-	public ResponseEntity<CompanyDTO> findCompanyById(@PathVariable("companyId") Long companyId)
+    @ApiOperation(value = "Recupera os dados cadastrais de todas as empresas existentes.", nickname = "findCompanyById", notes = "", tags={ "companies"})
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Operação bem sucessida!"),
+			@ApiResponse(code = 404, message = "Não foi encontrada nenhuma empresa na base de dados para o companyId informado!")})
+	@GetMapping(value = "/companies/{companyId}", consumes = "application/json",  produces = "application/json")
+	public ResponseEntity<CompanyDTO> findCompanyById(@ApiParam(value = "Identificador da empresa para consulta de seus dados cadastrais.", required = true) @PathVariable("companyId") Long companyId)
 	{
 		Optional<Company> companyOptional = companyService.findCompanyById(companyId);
 		
@@ -95,8 +101,11 @@ public class CompanyController
 		return new ResponseEntity<CompanyDTO>(companyDTO, HttpStatus.OK);
 	}
 	
-	@GetMapping(value = "/companies/{companyId}/stocks", produces = "application/json")
-	public ResponseEntity<List<StockDTO>> findAllStocksByCompanyId(@PathVariable("companyId") Long companyId)
+    @ApiOperation(value = "Recupera as ações existentes para uma empresa especifica.", nickname = "findAllStocksByCompanyId", notes = "", tags={ "companies"})
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Operação bem sucessida!"),
+			@ApiResponse(code = 404, message = "Não foi encontrada nenhuma ação na base de dados para o companyId informado!")})
+	@GetMapping(value = "/companies/{companyId}/stocks", consumes = "application/json",  produces = "application/json")
+	public ResponseEntity<List<StockDTO>> findAllStocksByCompanyId(@ApiParam(value = "Identificador da empresa para consulta de informações de suas ações no mercado.", required = true) @PathVariable("companyId") Long companyId)
 	{
 		List<StockDTO> stocksDTO = stockService.findAllStocksDTOByCompanyId(companyId);
 		if(stocksDTO==null || stocksDTO.size() == 0)
@@ -107,8 +116,10 @@ public class CompanyController
 		return new ResponseEntity<List<StockDTO>>(stocksDTO, HttpStatus.OK);
 	}
 	
-	@PostMapping(value = "/companies", produces = "application/json")
-	public ResponseEntity<CompanyDTO> insertCompany(@Valid @RequestBody CompanyDTO companyDTO)
+    @ApiOperation(value = "Insere uma nova empresa na base de dados", nickname = "insertCompany", notes = "", tags={ "companies"})
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Operação bem sucessida!")})
+	@PostMapping(value = "/companies", consumes = "application/json",  produces = "application/json")
+	public ResponseEntity<CompanyDTO> insertCompany(@ApiParam(value = "Objeto com as informações cadastrais da nova empresa para inclusão na base de dados.", required = true) @Valid @RequestBody CompanyDTO companyDTO)
 	{
 		Company company = companyMapper.companyDTOTOCompany(companyDTO);
 		Address address = addressMapper.addressDTOToAddress(companyDTO.getAddress());
@@ -124,8 +135,12 @@ public class CompanyController
 		return new ResponseEntity<CompanyDTO>(companyDTO, HttpStatus.OK);
 	}
 	
-	@PutMapping(value = "/companies/{companyId}", produces = "application/json")
-	public ResponseEntity<CompanyDTO> updateCompany(@PathVariable("companyId") Long companyId,  @Valid @RequestBody CompanyDTO companyDTO,
+    @ApiOperation(value = "Atualiza os dados cadastrais de uma empresa existente especifica.", nickname = "updateCompany", notes = "", tags={ "companies"})
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Operação bem sucessida!"),
+			@ApiResponse(code = 404, message = "Não foi encontrada nenhuma empresa na base de dados para o companyId informado!")})
+	@PutMapping(value = "/companies/{companyId}", consumes = "application/json",  produces = "application/json")
+	public ResponseEntity<CompanyDTO> updateCompany(@ApiParam(value = "Identificador da empresa para atualização de informações cadastrais.", required = true) @PathVariable("companyId") Long companyId, 
+			@ApiParam(value = "Objeto com as informações cadastrais da empresa para atualização na base de dados.", required = true) @Valid @RequestBody CompanyDTO companyDTO,
 			BindingResult result)
 	{
 		Optional<Company> companyOptional = companyService.findCompanyById(companyId);
@@ -161,8 +176,12 @@ public class CompanyController
 		return new ResponseEntity<CompanyDTO>(companyDTO, HttpStatus.OK);
 	}
 	
-	@PostMapping(value = "/companies/{companyId}/stocks", produces = "application/json")
-	public ResponseEntity<StockDTO> createStockForCompany(@PathVariable("companyId") Long companyId, @Valid @RequestBody StockDTO stockDTO)
+    @ApiOperation(value = "Insere uma nova ação para uma empresa especifica.", nickname = "createStockForCompany", notes = "", tags={ "companies"})
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Operação bem sucessida!"),
+			@ApiResponse(code = 404, message = "Não foi encontrada nenhuma empresa na base de dados para o companyId informado!")})
+	@PostMapping(value = "/companies/{companyId}/stocks", consumes = "application/json",  produces = "application/json")
+	public ResponseEntity<StockDTO> createStockForCompany(@ApiParam(value = "Identificador da empresa para inclusão de uma nova ação.", required = true) @PathVariable("companyId") Long companyId,
+			@ApiParam(value = "Objeto com as informações da ação a ser criada para a empresa.", required = true) @Valid @RequestBody StockDTO stockDTO)
 	{
 		Optional<Company> companyOptional = companyService.findCompanyById(companyId);
 		if(companyOptional.isPresent())
@@ -187,9 +206,14 @@ public class CompanyController
 		return new ResponseEntity<StockDTO>(stockDTO, HttpStatus.OK);
 	}
 
-	@PutMapping(value = "/companies/{companyId}/stocks/{stockId}", produces = "application/json")
-	public ResponseEntity<StockDTO> updateStockForCompany(@PathVariable("companyId") Long companyId,
-			@PathVariable("stockId") Long stockId,  @Valid @RequestBody StockDTO stockDTO)
+    @ApiOperation(value = "Atualiza uma ação especifica para uma empresa.", nickname = "updateStockForCompany", notes = "", tags={ "companies"})
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Operação bem sucessida!"),
+    		@ApiResponse(code = 400, message = "Quantidade de ações deve ser superior a zero!"),
+			@ApiResponse(code = 404, message = "Não foi encontrada nenhuma empresa ou estoque na base de dados para os parametros informados!")})
+	@PutMapping(value = "/companies/{companyId}/stocks/{stockId}", consumes = "application/json",  produces = "application/json")
+	public ResponseEntity<StockDTO> updateStockForCompany(@ApiParam(value = "Identificador da empresa para atualização de uma ação.", required = true) @PathVariable("companyId") Long companyId,
+			@ApiParam(value = "Identificador da ação a ser atualizada.", required = true) @PathVariable("stockId") Long stockId,  
+			@ApiParam(value = "Objeto com as informações da ação para atualização na base de dados. O valor para o campo stocksForSale deve ser superior a 1. O valor informado será incrementado ao valor atual de quantidade de ações disponiveis no mercado.", required = true) @Valid @RequestBody StockDTO stockDTO)
 	{
 		Optional<Company> companyOptional = companyService.findCompanyById(companyId);
 		Optional<Stock> stockOptional = stockService.findStockById(stockId);
@@ -197,6 +221,11 @@ public class CompanyController
 		{
 			if(stockOptional.isPresent())
 			{
+				if(stockDTO.getStocksForSale() < 1)
+				{
+					return new ResponseEntity<StockDTO>(HttpStatus.BAD_REQUEST);
+				}
+				
 				Stock stock = updateStockWithStockDTO(stockOptional.get(), stockDTO);
 				
 				stock = stockService.update(stock);	
@@ -224,7 +253,7 @@ public class CompanyController
 	{
 		stock.setDescription(stockDTO.getDescription());
 		stock.setStockType(StockTypeEnum.valueOf(stockDTO.getStockType()));
-		stock.setStocksForSale(stockDTO.getStocksForSale());
+		stock.setStocksForSale(stock.getStocksForSale() + stockDTO.getStocksForSale());
 		
 		return stock;
 	}

@@ -1,5 +1,6 @@
 package br.pucminas.stockmarket.api.mappers;
 
+import java.util.Calendar;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -45,6 +46,15 @@ public class InvestorMapper {
 				.map(addressMapper::addressDTOToAddress)
 				.collect(Collectors.toList()));	
 		investor.setCreationDate(investorDTO.getCreationDate());
+		
+		return investor;
+	}
+
+	public Investor updateInvestor(Investor investor, InvestorDTO investorDTO) 
+	{
+		investor.setName(investorDTO.getName());
+		investor.setEmail(investorDTO.getEmail());
+		investor.setLastUpdate(Calendar.getInstance());
 		
 		return investor;
 	}
